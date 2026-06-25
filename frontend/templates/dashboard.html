@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Dashboard</title>
+</head>
+<body>
+    <header>
+        <h1>Panel de usuario</h1>
+    </header>
+    <div id="container">
+        <p>
+            ¡Bienvenido <strong>{{ nombre }}</strong>!
+            Para cerrar sesión haz clic <a href="{{ url_for('logout') }}">aquí</a>.
+        </p>
+        <p><small>Tu sesión expirará automáticamente tras 15 minutos de inactividad.</small></p>
+    </div>
+    <script>
+        let tiempoInactividad = 15 * 60;
+        const intervalo = setInterval(() => {
+            tiempoInactividad--;
+            if (tiempoInactividad <= 0) {
+                clearInterval(intervalo);
+                alert('Tu sesión ha expirado por inactividad. Serás redirigido.');
+                window.location.href = "{{ url_for('logout') }}";
+            }
+        }, 1000);
+        function reiniciarContador() { tiempoInactividad = 15 * 60; }
+        document.addEventListener('click', reiniciarContador);
+        document.addEventListener('keydown', reiniciarContador);
+        document.addEventListener('mousemove', reiniciarContador);
+    </script>
+</body>
+</html>
